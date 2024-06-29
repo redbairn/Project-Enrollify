@@ -1,0 +1,8 @@
+# Ignore environment variables file
+.env
+
+# Ignore sensitive configuration files
+config/*.php
+
+
+partials/api_key.php
