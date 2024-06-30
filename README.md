@@ -12,6 +12,8 @@ This is a pet project that I've started outside of my regular Technical Support 
  4. Enrolls the user in the course that is selected from the dropdown by the manager
 
 ## Next Steps
-1. Build out the navigation to take somebody to the learner's dashboard (Could look at creating a login option at a later date)
-2. Show all enrollments to the learner (course thumbnail, description, enrollment data -- e.g. date created)
-3. If the learner selects a course tile they are sent, via SQSSO*, to the LearnUpon portal (*Might use an iframe at a later date so the content can sit right in the app)
+- [ ] Build out the navigation to take somebody to the learner's dashboard (Could look at creating a login option at a later date)
+- [ ] Show all enrollments to the learner (course thumbnail, description, enrollment data -- e.g. date created)
+- [ ] If the learner selects a course tile they are sent, via SQSSO*, to the LearnUpon portal
+- [ ] OPTIONAL: Create a login for the learner
+- [ ] OPTIONAL: Implement [LearnUpon Anywhere](https://support.learnupon.com/hc/en-us/articles/18314839521693-LearnUpon-Anywhere-getting-started#Makelearninganintegralpartofyourusers'dailyexperience) - iframe option within the web page itself.
