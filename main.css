@@ -107,7 +107,29 @@ button:hover {
   margin-top: 1em;
 }
 
-@media (max-width: 768px) {
+/* Error and Success Messages */
+.alert {
+  text-align: center; /* Center align text */
+  margin: 1em 0;
+  max-width: 600px; /* Limit maximum width for larger screens */
+  margin: 0 auto; /* Center the message horizontally */
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
+  padding: 10px;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  color: #155724;
+  padding: 10px;
+}
+
+@media (max-width: 1024px) {
   body ol,
   body ul {
       padding-left: 0; /* Override padding-left for ol and ul on smaller screens */
@@ -133,7 +155,7 @@ button:hover {
   }
 
   form,
-  form#nav_form {
+  form#enrollment_form {
       padding: 1em;
   }
 
@@ -164,12 +186,18 @@ button:hover {
       margin-left: 0;
       margin-top: 1em;
   }
+
+  /* Center h1 and h2 headings */
+  h1, h2 {
+      text-align: center; /* Center align headings */
+  }
 }
 
 /* Specific styles for iPad Air (and similar devices) */
 @media (min-width: 768px) and (max-width: 1024px) {
-  .col-left, .col-right {
-    display: none; /* Hide left and right columns */
+  .col-left,
+  .col-right {
+      display: none; /* Hide left and right columns */
   }
 
   .col-middle {
@@ -178,40 +206,54 @@ button:hover {
   }
 
   /* Adjust form width and centering */
-  #nav_form {
+  #enrollment_form {
       width: 100%; /* Make form width 100% */
       text-align: center; /* Center align form content */
       margin: 0 auto; /* Center form horizontally */
+      padding: 2em; /* Increase padding for better appearance */
+      border: 1px solid #ccc;
+      border-radius: 1em;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      background: #f9f9f9;
   }
 
   /* Adjust label styles */
-  #nav_form label {
+  #enrollment_form label {
       text-align: center; /* Center align label text */
       width: auto; /* Auto width for labels */
   }
-  /* Remove text-align: right; and width for labels in nav form */
-  form#nav_form label {
-      text-align: left;
-      width: auto;
+
+  /* Increase size of select and button in enrollment form */
+  form#enrollment_form select {
+      width: calc(100% - 20px); /* Adjust width to fit container */
+      font-size: 1.1em; /* Increase font size for readability */
+      padding: 12px; /* Increase padding for touch targets */
+      margin-bottom: 10px; /* Add margin for better spacing */
   }
 
-  /* Increase size of select and button in nav form */
-  form#nav_form select {
-      width: 100%;
+  form#enrollment_form button {
+      width: calc(100% - 20px); /* Adjust width to fit container */
       font-size: 1.1em; /* Increase font size for readability */
-      padding: 10px; /* Increase padding for touch targets */
-  }
-
-  form#nav_form button {
-      width: 100%;
-      font-size: 1.1em; /* Increase font size for readability */
-      padding: 10px; /* Increase padding for touch targets */
+      padding: 12px; /* Increase padding for touch targets */
   }
 }
 
-/* Media query for screens smaller than a laptop (e.g., tablets and phones) */
-@media (max-width: 1024px) {
+/* Larger screens like 2560px width */
+@media (min-width: 2560px) {
+  #enrollment_form {
+      width: 50%; /* Adjust width as needed */
+      margin: 0 auto; /* Center form horizontally */
+      padding: 3em; /* Increase padding for better appearance */
+  }
+
+  /* Center h1 and h2 headings */
   h1, h2 {
       text-align: center; /* Center align headings */
+  }
+
+  /* Reduce size of error and success messages */
+  .alert {
+      max-width: 400px; /* Adjust maximum width */
+      padding: 8px; /* Reduce padding */
   }
 }
