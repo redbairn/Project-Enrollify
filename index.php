@@ -5,12 +5,29 @@ include 'classes/Users.php';
 include 'classes/Courses.php';
 include 'classes/Enrollments.php';
 
-$lu_api = new Users($api_key, $domain);
-$lu_api2 = new Courses($api_key, $domain);
-$enroll_api = new Enrollments($api_key, $domain);
+try {
+    $lu_api = new Users($api_key, $domain);
+    $lu_api2 = new Courses($api_key, $domain);
+    $enroll_api = new Enrollments($api_key, $domain);
 
-$courses_response = $lu_api2->get_courses();
-$courses = $courses_response->courses; // Access the 'courses' array from the response object
+    $users_response = $lu_api->get_users();
+    
+    if (!isset($users_response->user)) {
+        throw new Exception("Users data not found in response");
+    }
+    $users = $users_response->user; // Access the 'users' array from the response object
+
+    $courses_response = $lu_api2->get_courses();
+    if (!isset($courses_response->courses)) {
+        throw new Exception("Courses data not found in response");
+    }
+    $courses = $courses_response->courses; // Access the 'courses' array from the response object
+} catch (Exception $e) {
+    $error_message = ucfirst($e->getMessage());
+    $users = [];
+    $courses = [];
+}
+
 
 $user_info = null;
 $enrollment_result = null;
@@ -105,91 +122,82 @@ if (isset($_POST['submit'])) {
 }
 ?>
 
-
 <div class="container-fluid">
     <div class="row">
-        <div class="col">
+        <div class="col col-left">
+            <!-- Column 1 -->
+        </div>
+        <div class="col col-middle">
             <h1>Manager Dashboard</h1>
 
-            <?php if ($error_message) { ?>
+            <?php if ($error_message): ?>
                 <div class="alert alert-danger" role="alert">
                     <?php echo $error_message; ?>
                 </div>
-            <?php } ?>
+            <?php endif; ?>
 
-            <?php if ($success_message) { ?>
+            <?php if ($success_message): ?>
                 <div class="alert alert-success" role="alert">
                     <?php echo $success_message; ?>
                 </div>
-            <?php } ?>
+            <?php endif; ?>
 
             <h2>Create Enrollment</h2>
             <form action="index.php" method="POST" id="enrollment_form">
-            <ul>
-              <li>
-                <label for="mail">Email:</label>
-                <input type="email" id="mail" name="user_email" required />
-              </li>
-              <li>
-                <label for="courses">Course:</label>
-                <select id="courses" name="select_course">
-                <option value="" disabled selected>Choose Course</option>
-                <?php 
-                // Loop through the courses and create an option for each course
-                foreach($courses as $course){ ?>
-                <option value="<?php echo $course->id;?>"><?php echo $course->name;?>
-                </option>
-                <?php } ?> 
-                </select>
-              </li>
-            </ul>
-            <button type="submit" name="submit">Enroll User</button>
+                <ul>
+                    <li>
+                        <label for="mail">Email:</label>
+                        <input type="email" id="mail" name="user_email" required />
+                    </li>
+                    <li>
+                        <label for="courses">Course:</label>
+                        <select id="courses" name="select_course">
+                            <option value="" disabled selected>Choose Course</option>
+                            <?php foreach($courses as $course): ?>
+                                <option value="<?php echo $course->id; ?>"><?php echo $course->name; ?></option>
+                            <?php endforeach; ?> 
+                        </select>
+                    </li>
+                </ul>
+                <div class="button-container">
+                    <button type="submit" name="submit">Enroll User</button>
+                </div>
             </form>
-        </div><!--End of col-->
-    </div><!--End of row-->
-    <!-- Start of second row-->
-    <div class="row">
-      <div class="col">
-        <!--Column 1-->
-      </div>
-      <div class="col">
-          <!--Nav Form-->
-          <h2>Navigation</h2>
-          </br>
-          </br>
-          <h3 style="text-align:center;">
-          <small class="text-body-secondary">This will take you to the Learner's Dashboard.</small>
-          </h3>
-          <form action="user_dashboard.php" method="POST" id="nav_form">
-          <ul>
-          <li>
-          <label for="users">Go to User Dashboard</label>
-          <select id="users" name="select_user">
-          <option value="" disabled selected>Choose User</option>
+        </div>
+        <div class="col col-right">
+            <!-- Column 3 -->
+        </div>
+    </div>
 
-          <?php include 'partials/navigation.php'; ?>
+    <div class="row second-row">
+        <div class="col col-left">
+            <!-- Column 1 -->
+        </div>
+        <div class="col col-middle nav-column">
+            <!-- Nav Form -->
+            <h2>Navigation</h2>
+            <form action="user_dashboard.php" method="POST" id="nav_form">
+                <ul>
+                    <li>
+                        <label for="users">Go to User Dashboard</label>
+                        <select id="users" name="select_user">
+                            <option value="" disabled selected>Choose User</option>
+                            <?php foreach($users as $user): ?>
+                                <option value="<?php echo $user->email; ?>"><?php echo $user->email; ?></option>
+                            <?php endforeach; ?> 
+                        </select>
+                    </li>
+                </ul>
+                <div class="button-container">
+                    <button type="submit" name="go">Go!</button>
+                </div>
+            </form>
+        </div>
+        <div class="col col-right">
+            <!-- Column 3 -->
+        </div>
+    </div>
+</div>
 
+<?php include 'partials/footer.php'; ?>
 
-
-          </select>
-          </li>
-          </ul>
-          <button type="submit" name="go">Go!</button>
-          </form> 
-
-
-
-
-      </div> 
-      <div class="col">
-        <!--Column 3-->
-      </div>
-    </div><!-- Start of second row-->
-
-
-
-  </div><!--End of Fluid Container-->
-
-<?php 
-  include 'partials/footer.php'; 
-?>
