@@ -10,6 +10,7 @@ class Enrollments extends LearnUponAPIBase {
         parent::__construct($api_key, $domain); // Call the parent constructor
     }
 
+    // Used to create an individual enrollment in LearnUpon
     public function create_enrollment($email, $course_id)
     {
         try
@@ -32,6 +33,24 @@ class Enrollments extends LearnUponAPIBase {
         catch (RequestException $e)
         {
             return $this->StatusCodeHandling($e);
+        }
+    }
+
+    // Checks for a enrollments (by the user's Email)
+    Public function get_enrollments_by_email($email)
+    {
+        try
+        {
+            $url = $this->api_url . "/enrollments/search?email=". urlencode($email);
+            $header = array("Authorization"=>"Basic " . $this->auth_key);
+            $response = $this->client->get($url, array("headers" => $header));
+            $result = json_decode($response->getBody()->getContents());
+            return $result;
+        }
+        catch (RequestException $e)
+        {
+            $response = $this->StatusCodeHandling($e);
+            return $response;
         }
     }
 

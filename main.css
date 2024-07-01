@@ -1,20 +1,36 @@
 /* General container and column styling */
+.welcome-message {
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  color: #555;
+  margin-top: 20px;
+}
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+.header-row h1 {
+  margin: 0;
+}
+
 .container-fluid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 20px;
 }
 
-.row {
-  display: flex;
-  flex-direction: column;
+/* Remove or override flex-direction for .row within the dashboard section */
+.container .row {
+  flex-direction: initial; /* or simply remove this line */
 }
 
 .second-row {
   display: flex;
   flex-direction: row;
-  align-items: flex-start; /* Ensure columns align at the top */
-  justify-content: center; /* Center content horizontally */
+  align-items: flex-start;
+  justify-content: center;
 }
 
 /* Column styling */
@@ -32,8 +48,8 @@
 }
 
 .nav-column {
-  max-width: 600px; /* Limit width of navigation form */
-  margin: 0 auto; /* Center navigation form */
+  max-width: 600px;
+  margin: 0 auto;
   padding: 1em;
 }
 
@@ -109,10 +125,10 @@ button:hover {
 
 /* Error and Success Messages */
 .alert {
-  text-align: center; /* Center align text */
+  text-align: center;
   margin: 1em 0;
-  max-width: 600px; /* Limit maximum width for larger screens */
-  margin: 0 auto; /* Center the message horizontally */
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .alert-danger {
@@ -129,131 +145,200 @@ button:hover {
   padding: 10px;
 }
 
+/* Styling the Learner Dashboard */
+.course-box {
+  border: 2px solid #ddd;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  height: 100%;
+  position: relative; /* Ensure relative positioning for absolute positioning within */
+}
+
+/* CSS for course-header */
+.course-header {
+  background-color: #333; 
+  color: #fff; 
+  border-top: 2px solid #ddd;
+  padding: 10px;
+}
+
+.course-header p {
+  margin: 0;
+}
+
+/* Styling for Status Bar in Course Box*/
+.status-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+  color: #333; /* Dark text color */
+  font-weight: bold; /* Bold text */
+  font-size: 1.1em; /* Larger font size */
+  text-align: center; /* Center align text */
+  margin-top: 10px; /* Spacing from course info */
+}
+
+.status-bar.failed {
+  background-color: #f8d7da; /* Red background color for failed */
+  border-top: 2px solid #dc3545; /* Red border color */
+}
+
+.status-bar.passed {
+  background-color: #d4edda; /* Green background color for passed or completed */
+  border-top: 2px solid #28a745; /* Green border color */
+}
+
+.status-bar.not-started {
+  background-color: #fff3cd; /* Yellow background color for not started */
+  border-top: 2px solid #ffc107; /* Yellow border color */
+}
+
+.status-bar.in-progress {
+  background-color: #d1ecf1; /* Blue background color for in progress */
+  border-top: 2px solid #17a2b8; /* Blue border color */
+}
+
+.thumbnail-placeholder {
+  width: 100%;
+  height: 150px;
+  background-color: #f0f0f0;
+  margin-bottom: 10px;
+}
+
+.course-info {
+  list-style-type: none;
+  padding: 0;
+  margin-bottom: 80px;
+}
+
+.course-info li {
+  margin-bottom: 5px;
+}
+
+.col-md-2 {
+  flex: 0 0 20%;
+  max-width: 20%;
+}
+
 @media (max-width: 1024px) {
   body ol,
   body ul {
-      padding-left: 0; /* Override padding-left for ol and ul on smaller screens */
+    padding-left: 0;
   }
   .container-fluid {
-      display: block;
+    display: block;
   }
 
   .second-row {
-      flex-direction: column;
+    flex-direction: column;
   }
 
   .col-left,
   .col-middle,
   .col-right {
-      flex: 1;
-      padding: 1em;
+    flex: 1;
+    padding: 1em;
   }
 
   .nav-column {
-      max-width: 100%; /* Allow navigation form to expand */
-      margin: 0 auto; /* Center navigation form */
+    max-width: 100%;
+    margin: 0 auto;
   }
 
   form,
   form#enrollment_form {
-      padding: 1em;
+    padding: 1em;
   }
 
   form li + li {
-      margin-top: 0.5em;
+    margin-top: 0.5em;
   }
 
   label {
-      display: block;
-      width: 100%;
-      text-align: left;
-      margin-bottom: 5px;
+    display: block;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 5px;
   }
 
   input,
   select {
-      width: 100%;
-      margin-left: 0;
+    width: 100%;
+    margin-left: 0;
   }
 
   button {
-      width: 100%;
-      padding: 20px 32px;
-      font-size: 18px;
+    width: 100%;
+    padding: 20px 32px;
+    font-size: 18px;
   }
 
   .button-container {
-      margin-left: 0;
-      margin-top: 1em;
+    margin-left: 0;
+    margin-top: 1em;
   }
 
-  /* Center h1 and h2 headings */
   h1, h2 {
-      text-align: center; /* Center align headings */
+    text-align: center;
   }
 }
 
-/* Specific styles for iPad Air (and similar devices) */
 @media (min-width: 768px) and (max-width: 1024px) {
   .col-left,
   .col-right {
-      display: none; /* Hide left and right columns */
+    display: none;
   }
 
   .col-middle {
-      display: block; /* Change to block layout for full width */
-      width: 100%; /* Ensure full width */
+    display: block;
+    width: 100%;
   }
 
-  /* Adjust form width and centering */
   #enrollment_form {
-      width: 100%; /* Make form width 100% */
-      text-align: center; /* Center align form content */
-      margin: 0 auto; /* Center form horizontally */
-      padding: 2em; /* Increase padding for better appearance */
-      border: 1px solid #ccc;
-      border-radius: 1em;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      background: #f9f9f9;
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+    padding: 2em;
+    border: 1px solid #ccc;
+    border-radius: 1em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: #f9f9f9;
   }
 
-  /* Adjust label styles */
   #enrollment_form label {
-      text-align: center; /* Center align label text */
-      width: auto; /* Auto width for labels */
+    width: auto;
   }
 
-  /* Increase size of select and button in enrollment form */
   form#enrollment_form select {
-      width: calc(100% - 20px); /* Adjust width to fit container */
-      font-size: 1.1em; /* Increase font size for readability */
-      padding: 12px; /* Increase padding for touch targets */
-      margin-bottom: 10px; /* Add margin for better spacing */
+    width: calc(100% - 20px);
+    font-size: 1.1em;
+    padding: 12px;
+    margin-bottom: 10px;
   }
 
   form#enrollment_form button {
-      width: calc(100% - 20px); /* Adjust width to fit container */
-      font-size: 1.1em; /* Increase font size for readability */
-      padding: 12px; /* Increase padding for touch targets */
+    width: calc(100% - 20px);
+    font-size: 1.1em;
+    padding: 12px;
   }
 }
 
-/* Larger screens like 2560px width */
 @media (min-width: 2560px) {
   #enrollment_form {
-      width: 50%; /* Adjust width as needed */
-      margin: 0 auto; /* Center form horizontally */
-      padding: 3em; /* Increase padding for better appearance */
+    width: 50%;
+    margin: 0 auto;
+    padding: 3em;
   }
 
-  /* Center h1 and h2 headings */
   h1, h2 {
-      text-align: center; /* Center align headings */
+    text-align: center;
   }
 
-  /* Reduce size of error and success messages */
   .alert {
-      max-width: 400px; /* Adjust maximum width */
-      padding: 8px; /* Reduce padding */
+    max-width: 400px;
+    padding: 8px;
   }
 }
