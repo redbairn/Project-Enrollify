@@ -155,6 +155,8 @@ button:hover {
   position: relative; /* Ensure relative positioning for absolute positioning within */
 }
 
+
+
 /* CSS for course-header */
 .course-header {
   background-color: #333; 
@@ -203,10 +205,30 @@ button:hover {
 
 .thumbnail-placeholder {
   width: 100%;
-  height: 150px;
+  height: auto; /* Ensure div adjusts to image height */
+  max-width: 100%; /* Maximum width of the image */
+  max-height: 200px; /* Example maximum height, adjust as needed */
+  text-align: center; /* Center image horizontally */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #f0f0f0;
-  margin-bottom: 10px;
+  text-align: center;
 }
+
+.thumbnail-placeholder img {
+  max-width: 100%;
+  max-height: 100%;
+  display: block; /* Remove default inline-block gaps */
+  object-fit: cover; /* Maintain aspect ratio and cover entire div */
+}
+
+.thumbnail-placeholder p {
+  color: #888;
+  font-style: italic;
+  padding: 20px;
+}
+
 
 .course-info {
   list-style-type: none;
@@ -222,6 +244,22 @@ button:hover {
   flex: 0 0 20%;
   max-width: 20%;
 }
+
+.filter-row {
+  margin-bottom: 20px;
+}
+
+#status-filter {
+  width: 100%;
+  max-width: 200px;
+  margin-top: 10px;
+}
+
+.pagination-width {
+  width: 100%; /* Ensure pagination spans full width */
+}
+
+
 
 @media (max-width: 1024px) {
   body ol,
@@ -323,6 +361,40 @@ button:hover {
     width: calc(100% - 20px);
     font-size: 1.1em;
     padding: 12px;
+  }
+}
+
+/* Hover effect for desktop screens */
+@media (min-width: 992px) {
+  .course-box {
+      transition: transform 0.3s ease, flex-grow 0.3s ease;
+      position: relative;
+      z-index: 0;
+  }
+
+  .course-box:hover {
+      transform: scale(1.05);
+      z-index: 1;
+  }
+
+  .row {
+      display: flex;
+      flex-wrap: wrap;
+  }
+
+  .row > .col-lg-2,
+  .row > .col-md-3,
+  .row > .col-sm-4,
+  .row > .col-6 {
+      transition: flex-grow 0.3s ease;
+      flex-grow: 1;
+  }
+
+  .row:hover > .col-lg-2:not(:hover),
+  .row:hover > .col-md-3:not(:hover),
+  .row:hover > .col-sm-4:not(:hover),
+  .row:hover > .col-6:not(:hover) {
+      flex-grow: 0.9;
   }
 }
 
