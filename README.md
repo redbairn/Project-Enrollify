@@ -12,7 +12,7 @@ This is a pet project that I've started outside of my regular Technical Support 
  4. Enrolls the user in the course that is selected from the dropdown by the manager
 
 ## Next Steps
-- [ ] Build out the navigation to take somebody to the learner's dashboard (Could look at creating a login option at a later date)
+- [x] Build out the navigation to take somebody to the learner's dashboard (Could look at creating a login option at a later date)
 - [ ] Show all enrollments to the learner (course thumbnail, description, enrollment data -- e.g. date created)
 - [ ] If the learner selects a course tile they are sent, via SQSSO*, to the LearnUpon portal
 - [ ] OPTIONAL: Create a login for the learner
