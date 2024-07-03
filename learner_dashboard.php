@@ -102,7 +102,12 @@ foreach ($enrollments as $enrollment) {
             <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-4 course-box-container" data-status="<?php echo $enrollment->status; ?>">
                 <div class="course-box">
                     <div class="course-header">
-                        <p><?php echo $enrollment->course_name; ?></p>
+
+                        <p><?php 
+                        // If the course version exists add (" v.N"), where N is the version number, otherwise set nothing
+                        echo $enrollment->course_name . (isset($course) && isset($course->version) ? " v." . $course->version : ''); 
+                        ?>
+                        </p>
                     </div>
                     <div class="thumbnail-placeholder">
                         <?php if ($course && filter_var($course->thumbnail_image_url, FILTER_VALIDATE_URL)): ?>
