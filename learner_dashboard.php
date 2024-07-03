@@ -17,6 +17,12 @@ $course_endpoint = new Courses($api_key, $domain);
 $courses_response = $course_endpoint->get_courses();
 $courses = $courses_response->courses;
 
+// Map courses by ID for quick lookup
+$course_map = [];
+foreach ($courses as $course) {
+    $course_map[$course->id] = $course;
+}
+
 // Calculate status counts
 $status_counts = [
     'all' => count($enrollments),
@@ -33,7 +39,6 @@ foreach ($enrollments as $enrollment) {
     }
 }
 ?>
-
 
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -89,33 +94,18 @@ foreach ($enrollments as $enrollment) {
     </div>
 
     <div id="courses-container">
-        <?php 
-        // Split enrollments into chunks of 5 for each row
-        $chunks = array_chunk($enrollments, 5);
-        foreach ($chunks as $chunk):
-        ?>
-        <div class="row course-row">
-            <?php foreach ($chunk as $enrollment): ?>
-                <?php
-                // Find the corresponding course for this enrollment
-                $course = null;
-                foreach ($courses as $c) {
-                    if ($c->id == $enrollment->course_id) {
-                        $course = $c;
-                        break;
-                    }
-                }
-                if (!$course) continue; // Skip if course not found
-
-                // Display course box with enrollment and course details
-                ?>
+        <?php foreach ($enrollments as $enrollment): ?>
+            <?php
+            // Find the corresponding course for this enrollment
+            $course = isset($course_map[$enrollment->course_id]) ? $course_map[$enrollment->course_id] : null;
+            ?>
             <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-4 course-box-container" data-status="<?php echo $enrollment->status; ?>">
                 <div class="course-box">
                     <div class="course-header">
                         <p><?php echo $enrollment->course_name; ?></p>
                     </div>
                     <div class="thumbnail-placeholder">
-                        <?php if (filter_var($course->thumbnail_image_url, FILTER_VALIDATE_URL)): ?>
+                        <?php if ($course && filter_var($course->thumbnail_image_url, FILTER_VALIDATE_URL)): ?>
                             <img src="<?php echo $course->thumbnail_image_url; ?>" alt="<?php echo $enrollment->course_name; ?>" class="course-thumbnail">
                         <?php else: ?>
                             <!-- Placeholder for the course thumbnail -->
@@ -137,8 +127,6 @@ foreach ($enrollments as $enrollment) {
                     </div>
                 </div>
             </div>
-            <?php endforeach; ?>
-        </div>
         <?php endforeach; ?>
     </div>
 </div>
@@ -150,14 +138,12 @@ document.addEventListener("DOMContentLoaded", function() {
     const courseBoxes = Array.from(document.querySelectorAll(".course-box-container"));
     const coursesContainer = document.getElementById("courses-container");
 
-    statusFilter.addEventListener("change", function() {
-        const selectedStatus = statusFilter.value;
-
+    function filterCourses(status) {
         // Clear the container
         coursesContainer.innerHTML = "";
 
         // Filter course boxes based on selected status
-        const filteredBoxes = courseBoxes.filter(box => selectedStatus === "all" || box.getAttribute("data-status") === selectedStatus);
+        const filteredBoxes = courseBoxes.filter(box => status === "all" || box.getAttribute("data-status") === status);
 
         // Split filtered boxes into chunks of 5
         const chunks = [];
@@ -175,9 +161,13 @@ document.addEventListener("DOMContentLoaded", function() {
             });
             coursesContainer.appendChild(row);
         });
+    }
 
-        // Update the counts in the filter options
-        updateFilterCounts(statusCounts);
+    // Initial filter
+    filterCourses(statusFilter.value);
+
+    statusFilter.addEventListener("change", function() {
+        filterCourses(statusFilter.value);
     });
 
     // Function to update filter counts
@@ -189,6 +179,9 @@ document.addEventListener("DOMContentLoaded", function() {
         document.querySelector('option[value="not_started"]').textContent = `Not Started (${statusCounts['not_started']})`;
         document.querySelector('option[value="in_progress"]').textContent = `In Progress (${statusCounts['in_progress']})`;
     }
+
+    // Update the counts in the filter options
+    updateFilterCounts(statusCounts);
 });
 </script>
 
