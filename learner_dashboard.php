@@ -91,9 +91,21 @@ foreach ($enrollments as $enrollment) {
                 <option value="in_progress">In Progress (<?php echo $status_counts['in_progress']; ?>)</option>
             </select>
         </div>
+        <!--Search box-->
+        <div class="col">
+            <label for="course-search">Search by Course Name:</label>
+            <input type="text" id="course-search" class="form-control" placeholder="Enter course name...">
+        </div>
     </div>
 
     <div id="courses-container">
+        <!-- No Results Message -->
+        <div id="no-results-message" style="display: none; text-align: center; margin-top: 20px;">
+            <p>No results found</p>
+            <img src="images/sad_panda.jpg" alt="Sad Panda" style="max-width: 200px; height: auto;">
+        </div>
+
+        <!-- Course Boxes -->
         <?php foreach ($enrollments as $enrollment): ?>
             <?php
             // Find the corresponding course for this enrollment
@@ -142,13 +154,30 @@ document.addEventListener("DOMContentLoaded", function() {
     const statusFilter = document.getElementById("status-filter");
     const courseBoxes = Array.from(document.querySelectorAll(".course-box-container"));
     const coursesContainer = document.getElementById("courses-container");
+    const courseSearchInput = document.getElementById("course-search");
+    const noResultsMessage = document.getElementById("no-results-message");
 
-    function filterCourses(status) {
+    function filterCourses() {
+        const status = statusFilter.value;
+        const searchQuery = courseSearchInput.value.trim().toLowerCase();
+
+
         // Clear the container
         coursesContainer.innerHTML = "";
+        noResultsMessage.style.display = "none";
 
-        // Filter course boxes based on selected status
-        const filteredBoxes = courseBoxes.filter(box => status === "all" || box.getAttribute("data-status") === status);
+        // Filter course boxes based on selected status and search query
+        const filteredBoxes = courseBoxes.filter(box => {
+            const courseName = box.querySelector(".course-header p").textContent.toLowerCase();
+            const statusMatch = status === "all" || box.getAttribute("data-status") === status;
+            const searchMatch = searchQuery === "" || courseName.includes(searchQuery);
+            return statusMatch && searchMatch;
+        });
+
+        // If no results found, display no results message and sad panda image
+        if (filteredBoxes.length === 0) {
+            noResultsMessage.style.display = "block";
+        }
 
         // Split filtered boxes into chunks of 5
         const chunks = [];
@@ -169,11 +198,17 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Initial filter
-    filterCourses(statusFilter.value);
+    filterCourses();
 
+    // Event listeners
     statusFilter.addEventListener("change", function() {
-        filterCourses(statusFilter.value);
+        filterCourses();
     });
+
+    courseSearchInput.addEventListener("input", function() {
+        filterCourses();
+    });
+
 
     // Function to update filter counts
     function updateFilterCounts(statusCounts) {
