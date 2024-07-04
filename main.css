@@ -259,7 +259,17 @@ button:hover {
   width: 100%; /* Ensure pagination spans full width */
 }
 
-
+#no-results-message {
+    display: none;
+    text-align: center;
+    margin-top: 20px;
+}
+#no-results-message img {
+    max-width: 33%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
 
 @media (max-width: 1024px) {
   body ol,

@@ -98,13 +98,13 @@ foreach ($enrollments as $enrollment) {
         </div>
     </div>
 
-    <div id="courses-container">
-        <!-- No Results Message -->
-        <div id="no-results-message" style="display: none; text-align: center; margin-top: 20px;">
-            <p>No results found</p>
-            <img src="images/sad_panda.jpg" alt="Sad Panda" style="max-width: 200px; height: auto;">
-        </div>
+    <!-- No Results Message -->
+    <div id="no-results-message">
+        <p>No results found</p>
+        <img src="images/sad_panda.jpg" alt="Sad Panda">
+    </div>
 
+    <div id="courses-container">
         <!-- Course Boxes -->
         <?php foreach ($enrollments as $enrollment): ?>
             <?php
@@ -161,10 +161,15 @@ document.addEventListener("DOMContentLoaded", function() {
         const status = statusFilter.value;
         const searchQuery = courseSearchInput.value.trim().toLowerCase();
 
+        // Remove only the course boxes, not the no-results message
+        courseBoxes.forEach(box => box.remove());
+        noResultsMessage.style.display = "none";
+
 
         // Clear the container
         coursesContainer.innerHTML = "";
         noResultsMessage.style.display = "none";
+        console.log(noResultsMessage);
 
         // Filter course boxes based on selected status and search query
         const filteredBoxes = courseBoxes.filter(box => {
@@ -172,11 +177,14 @@ document.addEventListener("DOMContentLoaded", function() {
             const statusMatch = status === "all" || box.getAttribute("data-status") === status;
             const searchMatch = searchQuery === "" || courseName.includes(searchQuery);
             return statusMatch && searchMatch;
+
         });
 
         // If no results found, display no results message and sad panda image
         if (filteredBoxes.length === 0) {
             noResultsMessage.style.display = "block";
+            console.log(filteredBoxes);
+            console.log(noResultsMessage);
         }
 
         // Split filtered boxes into chunks of 5
