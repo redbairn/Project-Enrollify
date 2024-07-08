@@ -1,6 +1,7 @@
 <?php 
 include 'partials/header.php';
 include 'partials/api_key.php'; 
+include 'partials/format.php'; 
 include 'classes/Users.php';
 include 'classes/Courses.php';
 include 'classes/Enrollments.php';
@@ -112,155 +113,48 @@ foreach ($enrollments as $enrollment) {
             $course = isset($course_map[$enrollment->course_id]) ? $course_map[$enrollment->course_id] : null;
             ?>
             <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-4 course-box-container" data-status="<?php echo $enrollment->status; ?>">
-                <div class="course-box">
-                    <div class="course-header">
+                <a id="course-box-link" href="sso_login.php?email=<?php echo urlencode($email); ?>&enrollmentId=<?php echo $enrollment->id; ?>">
+                    <div class="course-box">
+                        <div class="course-header">
 
-                        <p><?php 
-                        // If the course version exists add (" v.N"), where N is the version number, otherwise set nothing
-                        echo $enrollment->course_name . (isset($course) && isset($course->version) ? " v." . $course->version : ''); 
-                        ?>
-                        </p>
-                    </div>
-                    <div class="thumbnail-placeholder">
-                        <?php if ($course && filter_var($course->thumbnail_image_url, FILTER_VALIDATE_URL)): ?>
-                            <img src="<?php echo $course->thumbnail_image_url; ?>" alt="<?php echo $enrollment->course_name; ?>" class="course-thumbnail">
-                        <?php else: ?>
-                            <!-- Placeholder for the course thumbnail -->
-                            <p>No Thumbnail Available</p>
-                        <?php endif; ?>
-                    </div>
+                            <p><?php 
+                            // If the course version exists add (" v.N"), where N is the version number, otherwise set nothing
+                            echo $enrollment->course_name . (isset($course) && isset($course->version) ? " v." . $course->version : ''); 
+                            ?>
+                            </p>
+                        </div>
+                        <div class="thumbnail-placeholder">
+                            <?php if ($course && filter_var($course->thumbnail_image_url, FILTER_VALIDATE_URL)): ?>
+                                <img src="<?php echo $course->thumbnail_image_url; ?>" alt="<?php echo $enrollment->course_name; ?>" class="course-thumbnail">
+                            <?php else: ?>
+                                <!-- Placeholder for the course thumbnail -->
+                                <p>No Thumbnail Available</p>
+                            <?php endif; ?>
+                        </div>
 
-                    <ul class="course-info">
-                        <li><strong>Enrollment ID:</strong> <?php echo $enrollment->id; ?></li>
-                        <li><strong>Course ID:</strong> <?php echo $enrollment->course_id; ?></li>
-                        <li><strong>Date Enrolled:</strong> <?php echo format_date($enrollment->date_enrolled); ?></li>
-                        <li><strong>Date Completed:</strong> <?php echo format_date($enrollment->date_completed); ?></li>
-                        <?php if (!empty($enrollment->percentage)): ?>
-                            <li><strong>Percentage:</strong> <?php echo $enrollment->percentage; ?></li>
-                        <?php endif; ?>
-                    </ul>
-                    <div class="status-bar <?php echo format_status_class($enrollment->status); ?>">
-                        <p><?php echo format_status($enrollment->status); ?></p>
+                        <ul class="course-info">
+                            <li><strong>Enrollment ID:</strong> <?php echo $enrollment->id; ?></li>
+                            <li><strong>Course ID:</strong> <?php echo $enrollment->course_id; ?></li>
+                            <li><strong>Date Enrolled:</strong> <?php echo format_date($enrollment->date_enrolled); ?></li>
+                            <li><strong>Date Completed:</strong> <?php echo format_date($enrollment->date_completed); ?></li>
+                            <?php if (!empty($enrollment->percentage)): ?>
+                                <li><strong>Percentage:</strong> <?php echo $enrollment->percentage; ?></li>
+                            <?php endif; ?>
+                        </ul>
+                        <div class="status-bar <?php echo format_status_class($enrollment->status); ?>">
+                            <p><?php echo format_status($enrollment->status); ?></p>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
         <?php endforeach; ?>
     </div>
 </div>
 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    const statusCounts = <?php echo json_encode($status_counts); ?>;
-    const statusFilter = document.getElementById("status-filter");
-    const courseBoxes = Array.from(document.querySelectorAll(".course-box-container"));
-    const coursesContainer = document.getElementById("courses-container");
-    const courseSearchInput = document.getElementById("course-search");
-    const noResultsMessage = document.getElementById("no-results-message");
-
-    function filterCourses() {
-        const status = statusFilter.value;
-        const searchQuery = courseSearchInput.value.trim().toLowerCase();
-
-        // Remove only the course boxes, not the no-results message
-        courseBoxes.forEach(box => box.remove());
-        noResultsMessage.style.display = "none";
+<!-- Hidden div to store the status counts for JavaScript -->
+<div id="status-counts" style="display: none;"><?php echo json_encode($status_counts); ?></div>
 
 
-        // Clear the container
-        coursesContainer.innerHTML = "";
-        noResultsMessage.style.display = "none";
-        console.log(noResultsMessage);
-
-        // Filter course boxes based on selected status and search query
-        const filteredBoxes = courseBoxes.filter(box => {
-            const courseName = box.querySelector(".course-header p").textContent.toLowerCase();
-            const statusMatch = status === "all" || box.getAttribute("data-status") === status;
-            const searchMatch = searchQuery === "" || courseName.includes(searchQuery);
-            return statusMatch && searchMatch;
-
-        });
-
-        // If no results found, display no results message and sad panda image
-        if (filteredBoxes.length === 0) {
-            noResultsMessage.style.display = "block";
-            console.log(filteredBoxes);
-            console.log(noResultsMessage);
-        }
-
-        // Split filtered boxes into chunks of 5
-        const chunks = [];
-        for (let i = 0; i < filteredBoxes.length; i += 5) {
-            chunks.push(filteredBoxes.slice(i, i + 5));
-        }
-
-        // Append filtered and chunked boxes to the container
-        chunks.forEach(chunk => {
-            const row = document.createElement("div");
-            row.className = "row course-row";
-            chunk.forEach(box => {
-                const clonedBox = box.cloneNode(true); // Clone the box to keep it for future filters
-                row.appendChild(clonedBox);
-            });
-            coursesContainer.appendChild(row);
-        });
-    }
-
-    // Initial filter
-    filterCourses();
-
-    // Event listeners
-    statusFilter.addEventListener("change", function() {
-        filterCourses();
-    });
-
-    courseSearchInput.addEventListener("input", function() {
-        filterCourses();
-    });
-
-
-    // Function to update filter counts
-    function updateFilterCounts(statusCounts) {
-        document.querySelector('option[value="all"]').textContent = `All (${statusCounts['all']})`;
-        document.querySelector('option[value="failed"]').textContent = `Failed (${statusCounts['failed']})`;
-        document.querySelector('option[value="passed"]').textContent = `Passed (${statusCounts['passed']})`;
-        document.querySelector('option[value="completed"]').textContent = `Completed (${statusCounts['completed']})`;
-        document.querySelector('option[value="not_started"]').textContent = `Not Started (${statusCounts['not_started']})`;
-        document.querySelector('option[value="in_progress"]').textContent = `In Progress (${statusCounts['in_progress']})`;
-    }
-
-    // Update the counts in the filter options
-    updateFilterCounts(statusCounts);
-});
-</script>
-
-<?php include 'partials/footer.php'; 
-
-// Function to format the date
-function format_date($dateString) {
-    $date = new DateTime($dateString);
-    return $date->format('M, jS Y');
-}
-
-// Function to format status
-function format_status($status) {
-    // Replace underscores and convert to uppercase
-    return ucwords(str_replace('_', ' ', $status));
-}
-
-// Function to determine status class
-function format_status_class($status) {
-    switch ($status) {
-        case 'failed':
-            return 'failed';
-        case 'passed':
-        case 'completed':
-            return 'passed';
-        case 'not_started':
-            return 'not-started';
-        case 'in_progress':
-            return 'in-progress';
-        default:
-            return '';
-    }
-}
+<?php 
+include 'partials/footer.php'; 
 ?>

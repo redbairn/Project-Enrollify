@@ -271,6 +271,10 @@ button:hover {
     margin: 0 auto;
 }
 
+#course-box-link{
+  all: unset;
+}
+
 @media (max-width: 1024px) {
   body ol,
   body ul {

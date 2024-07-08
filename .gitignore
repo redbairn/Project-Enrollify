@@ -3,6 +3,3 @@
 
 # Ignore sensitive configuration files
 config/*.php
-
-
-partials/api_key.php
