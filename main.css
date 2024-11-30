@@ -1,9 +1,57 @@
 body {
-  background: linear-gradient(180deg, #F4F4F4 0%, #E8E8E8 100%);
-  color: #333;
+  background-color: #b9c5e5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23003366' fill-opacity='0.41' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+  background-size: 5px 5px;   
+  background-repeat: repeat; 
+  background-attachment: fixed; 
+  color: #333; 
 }
 
+.navbar {
+  background: linear-gradient(90deg, #4caf50, #2e7d32); /* Gradient background */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  border-bottom: 2px solid #1b5e20; /* Accent color */
+}
 
+.navbar a.nav-link {
+  color: #fff; /* White text for contrast */
+  font-weight: bold;
+  padding: 10px 20px; /* Add spacing */
+  transition: color 0.3s ease, background-color 0.3s ease; /* Smooth hover */
+}
+
+.navbar a.nav-link:hover {
+  background: rgba(255, 255, 255, 0.2); /* Subtle hover effect */
+  color: #ffeb3b; /* Change text color */
+  border-radius: 5px; /* Add rounded corners */
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover {
+  transform: scale(1.1); /* Slight zoom on hover */
+}
+
+/* Change the active menu item color to white */
+.navbar-nav .nav-link.active, 
+.navbar-nav .nav-link.show {
+    color: white !important; /* Override the variable-based color */
+    font-weight: bold; /* Optional: make it stand out more */
+    border-bottom: 3px solid #fff; /* Add a horizontal line */
+    padding-bottom: 5px; /* Add some space for the line */
+    transition: border-bottom 0.3s ease; /* Smooth animation for line */
+}
+
+/* Hover effect for all navigation links */
+.navbar-nav .nav-link:hover {
+    color: #ffeb3b; /* Optional: Highlight on hover */
+    text-decoration: none; /* Remove default underline */
+}
 
 /* General container and column styling */
 .welcome-message {
