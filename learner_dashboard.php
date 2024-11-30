@@ -14,13 +14,6 @@ $enrollment_endpoint = new Enrollments($api_key, $domain);
 $enrollments_response = $enrollment_endpoint->get_enrollments_by_email($email);
 $enrollments = $enrollments_response->enrollments;
 
-// Need to ignore unenrollments 
-$filtered_enrollments = array_filter($enrollments, function($enrollment) {
-    return empty($enrollment->unenrolled) || $enrollment->unenrolled === false;
-});
-
-
-
 
 $course_endpoint = new Courses($api_key, $domain);
 $courses_response = $course_endpoint->get_courses();
@@ -31,6 +24,13 @@ $course_map = [];
 foreach ($courses as $course) {
     $course_map[$course->id] = $course;
 }
+
+
+// Need to ignore unenrollments and remove enrollments where a course has been deleted
+$filtered_enrollments = array_filter($enrollments, function($enrollment) use ($course_map) {
+    return (empty($enrollment->unenrolled) || $enrollment->unenrolled === false) 
+        && isset($course_map[$enrollment->course_id]);
+});
 
 // Calculate status counts
 $status_counts = [
