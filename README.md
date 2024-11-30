@@ -13,7 +13,7 @@ This is a pet project that I've started outside of my regular Technical Support 
 
 ## Next Steps
 - [x] Build out the navigation to take somebody to the learner's dashboard (Could look at creating a login option at a later date)
-- [ ] Show all enrollments to the learner (course thumbnail, description, enrollment data -- e.g. date created)
-- [ ] If the learner selects a course tile they are sent, via SQSSO*, to the LearnUpon portal
+- [X] Show all enrollments to the learner (course thumbnail, description, enrollment data -- e.g. date created)
+- [X] If the learner selects a course tile they are sent, via SQSSO*, to the LearnUpon portal
 - [ ] OPTIONAL: Create a login for the learner
 - [ ] OPTIONAL: Implement [LearnUpon Anywhere](https://support.learnupon.com/hc/en-us/articles/18314839521693-LearnUpon-Anywhere-getting-started#Makelearninganintegralpartofyourusers'dailyexperience) - iframe option within the web page itself.
