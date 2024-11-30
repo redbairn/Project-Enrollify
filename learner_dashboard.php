@@ -14,6 +14,14 @@ $enrollment_endpoint = new Enrollments($api_key, $domain);
 $enrollments_response = $enrollment_endpoint->get_enrollments_by_email($email);
 $enrollments = $enrollments_response->enrollments;
 
+// Need to ignore unenrollments 
+$filtered_enrollments = array_filter($enrollments, function($enrollment) {
+    return empty($enrollment->unenrolled) || $enrollment->unenrolled === false;
+});
+
+
+
+
 $course_endpoint = new Courses($api_key, $domain);
 $courses_response = $course_endpoint->get_courses();
 $courses = $courses_response->courses;
@@ -107,7 +115,7 @@ foreach ($enrollments as $enrollment) {
 
     <div id="courses-container">
         <!-- Course Boxes -->
-        <?php foreach ($enrollments as $enrollment): ?>
+        <?php foreach ($filtered_enrollments as $enrollment): ?>
             <?php
             // Find the corresponding course for this enrollment
             $course = isset($course_map[$enrollment->course_id]) ? $course_map[$enrollment->course_id] : null;
@@ -136,7 +144,11 @@ foreach ($enrollments as $enrollment) {
                             <li><strong>Enrollment ID:</strong> <?php echo $enrollment->id; ?></li>
                             <li><strong>Course ID:</strong> <?php echo $enrollment->course_id; ?></li>
                             <li><strong>Date Enrolled:</strong> <?php echo format_date($enrollment->date_enrolled); ?></li>
-                            <li><strong>Date Completed:</strong> <?php echo format_date($enrollment->date_completed); ?></li>
+                           <?php if (!empty($enrollment->date_completed)): ?>
+                                <li><strong>Date Completed:</strong> <?php echo format_date($enrollment->date_completed); ?></li>
+                            <?php else: ?>
+                                <li><strong>Date Completed:</strong> Not completed</li>
+                            <?php endif; ?>
                             <?php if (!empty($enrollment->percentage)): ?>
                                 <li><strong>Percentage:</strong> <?php echo $enrollment->percentage; ?></li>
                             <?php endif; ?>

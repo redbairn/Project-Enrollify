@@ -1,8 +1,15 @@
+body {
+  background: linear-gradient(180deg, #F4F4F4 0%, #E8E8E8 100%);
+  color: #333;
+}
+
+
+
 /* General container and column styling */
 .welcome-message {
   font-family: 'Arial', sans-serif;
   font-weight: bold;
-  color: #555;
+  color: #fff;
   margin-top: 20px;
 }
 .header-row {
@@ -10,9 +17,16 @@
   align-items: center;
   justify-content: space-between;
   margin-top: 20px;
+  background: #003366; /* Navy Blue */
+  color: #fff;         /* White text */
+  padding: 15px 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 .header-row h1 {
   margin: 0;
+  font-size: 2rem;
+  margin: 0;
+  color: #ffffff;
 }
 
 .container-fluid {
@@ -57,11 +71,11 @@
 form {
   margin: 0 auto;
   width: 100%;
-  padding: 2em;
-  border: 1px solid #ccc;
-  border-radius: 1em;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background: #f9f9f9;
+  background: #ffffff;
 }
 
 ul {
@@ -85,12 +99,17 @@ select {
   font: 1em sans-serif;
   width: calc(100% - 130px);
   padding: 10px;
-  margin-left: 10px;
   box-sizing: border-box;
-  border: 1px solid #999;
-  border-radius: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
   transition: border-color 0.3s ease;
+  background: #f9f9f9;
 }
+
+#email_label {
+  margin-left: 10px;
+}
+
 
 input:focus,
 select:focus {
@@ -103,12 +122,13 @@ button {
   background-color: #4CAF50;
   border: none;
   color: white;
-  padding: 15px 32px;
+  padding: 12px 20px;
   text-align: center;
   text-decoration: none;
   font-size: 16px;
   border-radius: 8px;
   cursor: pointer;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
@@ -147,14 +167,21 @@ button:hover {
 
 /* Styling the Learner Dashboard */
 .course-box {
-  border: 2px solid #ddd;
-  padding: 10px;
-  border-radius: 5px;
+  background: #ffffff; /* White for contrast */
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
   text-align: center;
   height: 100%;
   position: relative; /* Ensure relative positioning for absolute positioning within */
 }
 
+.course-box:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
 
 
 /* CSS for course-header */
@@ -252,7 +279,6 @@ button:hover {
 #status-filter {
   width: 100%;
   max-width: 200px;
-  margin-top: 10px;
 }
 
 .pagination-width {
@@ -386,10 +412,7 @@ button:hover {
       z-index: 0;
   }
 
-  .course-box:hover {
-      transform: scale(1.05);
-      z-index: 1;
-  }
+
 
   .row {
       display: flex;

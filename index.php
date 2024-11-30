@@ -145,7 +145,7 @@ try {
             <form action="index.php" method="POST" id="enrollment_form">
                 <ul>
                     <li>
-                        <label for="mail">Email:</label>
+                        <label id="email_label" for="mail">Email:</label>
                         <input type="email" id="mail" name="user_email" required />
                     </li>
                     <li>
